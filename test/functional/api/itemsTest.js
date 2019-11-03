@@ -348,4 +348,20 @@ describe("Itemss", () => {
         });
     });
 
+
+    describe("DELETE /item/:id", () => {
+        describe("when the id is valid", () => {
+                it("should get item with the valid id and delete it", done => {
+                    request(server)
+                        .delete(`/items/${validID}`)
+                        .set("Accept", "application/json")
+                        .expect("Content-Type", /json/)
+                        .expect(200)
+                        .end((err) => {
+                            done(err);
+                        });
+                });
+            });
+        });
+
 });
