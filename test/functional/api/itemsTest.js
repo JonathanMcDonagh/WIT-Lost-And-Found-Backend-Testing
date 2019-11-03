@@ -249,4 +249,50 @@ describe("Itemss", () => {
         });
     });
 
+
+
+    describe("PUT /item/:id/update", () => {
+        describe("when the id is valid", () => {
+            it("should return a message and update the item", () => {
+                it("should get item with the valid id and update it", done => {
+                    request(server)
+                        .get(`/items/${validID}`)
+                        .set("Accept", "application/json")
+                        .expect("Content-Type", /json/)
+                        .expect(200)
+                        .end((err, res) => {
+                            expect(res.body[0]).to.have.property("studentid", 20075620);
+                            expect(res.body[0]).to.have.property("lostitem", "Laptop");
+                            done(err);
+                        });
+                });
+                const itemUpdated = {
+                    studentid: 20075620,
+                    name: "Test Name UPDATED",
+                    WITBuilding: "Business Building",
+                    WITRoom: "F02",
+                    lostitem: "Laptop",
+                    likes: 0
+                };
+                return request(server)
+                    .put(`/item/${validID}/update`)
+                    .send(itemUpdated)
+                    .expect(200)
+                    .then(resp => {
+                        expect(resp.body.data).to.have.property("lostitem", "Laptop");
+                    });
+            });
+            after(() => {
+                return request(server)
+                    .get(`/items/${validID}`)
+                    .set("Accept", "application/json")
+                    .expect("Content-Type", /json/)
+                    .expect(200)
+                    .then(resp => {
+                        expect(resp.body[0]).to.have.property("lostitem", "Laptop");
+                    });
+            });
+        });
+    });
+
 });
