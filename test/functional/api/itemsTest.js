@@ -250,7 +250,6 @@ describe("Itemss", () => {
     });
 
 
-
     describe("PUT /item/:id/update", () => {
         describe("when the id is valid", () => {
             it("should return a message and update the item", () => {
@@ -293,6 +292,15 @@ describe("Itemss", () => {
                     });
             });
         });
+        describe("when the id is invalid", () => {
+            it("should return a 404 and a message for invalid item id", () => {
+                return request(server)
+                    .put("/items/1100001/update")
+                    .expect(404);
+            });
+        });
     });
+
+
 
 });
