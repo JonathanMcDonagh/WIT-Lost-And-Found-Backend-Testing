@@ -339,6 +339,13 @@ describe("Itemss", () => {
                     });
             });
         });
+        describe("when the id is invalid", () => {
+            it("should return a 404 and a message for invalid item id", () => {
+                return request(server)
+                    .put("/items/lostitem/0000/update")
+                    .expect(404);
+            });
+        });
     });
 
 });
