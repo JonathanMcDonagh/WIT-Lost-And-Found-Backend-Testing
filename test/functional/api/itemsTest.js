@@ -92,4 +92,35 @@ describe("Itemss", () => {
     });
 
 
+    describe("GET /items/:id", () => {
+        describe("when the id is valid", () => {
+            it("should return the matching item", done => {
+                request(server)
+                    .get(`/items/${validID}`)
+                    .set("Accept", "application/json")
+                    .expect("Content-Type", /json/)
+                    .expect(200)
+                    .end((err, res) => {
+                        expect(res.body[0]).to.have.property("studentid", 20074520);
+                        expect(res.body[0]).to.have.property("lostitem", "USB Type C Charger");
+                        done(err);
+                    });
+            });
+        });
+        describe("when the id is invalid", () => {
+            it("should return the NOT found message", done => {
+                request(server)
+                    .get("/items/0000")
+                    .set("Accept", "application/json")
+                    .expect("Content-Type", /json/)
+                    .expect(200)
+                    .end((err, res) => {
+                        expect(res.body.message).equals("Item NOT Found!");
+                        done(err);
+                    });
+            });
+        });
+    });
+
+
 });
