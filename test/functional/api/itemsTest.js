@@ -302,5 +302,43 @@ describe("Itemss", () => {
     });
 
 
+    describe("PUT /item/lostitem/:id/update", () => {
+        describe("when the id is valid", () => {
+            it("should return a message and update the lost item", () => {
+                it("should get item with the valid id and update the lost item", done => {
+                    request(server)
+                        .get(`/item/lostitem/${validID}/update`)
+                        .set("Accept", "application/json")
+                        .expect("Content-Type", /json/)
+                        .expect(200)
+                        .end((err, res) => {
+                            expect(res.body[0]).to.have.property("studentid", 20075620);
+                            expect(res.body[0]).to.have.property("lostitem", "Laptop");
+                            done(err);
+                        });
+                });
+                const lostItemUpdated = {
+                    lostitem: "Laptop UPDATED"
+                };
+                return request(server)
+                    .put(`/item/lostitem/${validID}/update`)
+                    .send(lostItemUpdated)
+                    .expect(200)
+                    .then(resp => {
+                        expect(resp.body.data).to.have.property("lostitem", "Laptop UPDATED");
+                    });
+            });
+            after(() => {
+                return request(server)
+                    .get(`/items/${validID}`)
+                    .set("Accept", "application/json")
+                    .expect("Content-Type", /json/)
+                    .expect(200)
+                    .then(resp => {
+                        expect(resp.body[0]).to.have.property("lostitem", "Laptop UPDATED");
+                    });
+            });
+        });
+    });
 
 });
