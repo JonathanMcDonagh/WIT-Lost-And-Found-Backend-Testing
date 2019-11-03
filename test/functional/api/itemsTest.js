@@ -154,4 +154,35 @@ describe("Itemss", () => {
     });
 
 
+    describe("GET /rooms/:WITRoom", () => {
+        describe("when the WIT Room id is valid", () => {
+            it("should return the matching item", done => {
+                request(server)
+                    .get(`/rooms/${WITRoom}`)
+                    .set("Accept", "application/json")
+                    .expect("Content-Type", /json/)
+                    .expect(200)
+                    .end((err, res) => {
+                        expect(res.body[0]).to.have.property("WITBuilding", "IT Building");
+                        expect(res.body[0]).to.have.property("lostitem", "USB Type C Charger");
+                        done(err);
+                    });
+            });
+        });
+
+        describe("when the WIT Room is invalid", () => {
+            it("should return the NOT found message", done => {
+                request(server)
+                    .get("/rooms/0000")
+                    .set("Accept", "application/json")
+                    .expect("Content-Type", /json/)
+                    .expect(200)
+                    .end((err, res) => {
+                        done(err);
+                    });
+            });
+        });
+    });
+
+
 });
