@@ -67,4 +67,29 @@ describe("Itemss", () => {
             console.log(error);
         }
     });
+
+    describe("GET /items", () => {
+        it("should GET all the items", done => {
+            request(server)
+                .get("/items")
+                .set("Accept", "application/json")
+                .expect("Content-Type", /json/)
+                .expect(200)
+                .end((err, res) => {
+                    try{
+                        expect(res.body).to.be.a("array");
+                        const result = _.map(res.body, item => {
+                            return {studentid: item.studentid, lostitem: item.lostitem};
+                        });
+                        expect(result).to.deep.include({studentid: 20074520, lostitem: "USB Type C Charger"});
+                        expect(result).to.deep.include({studentid: 20074530, lostitem: "Bag"});
+                        done();
+                    } catch (e) {
+                        done(err);
+                    }
+                });
+        });
+    });
+
+
 });
