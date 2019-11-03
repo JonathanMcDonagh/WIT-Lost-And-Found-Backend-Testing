@@ -386,6 +386,18 @@ describe("Itemss", () => {
                     });
             });
         });
+        describe("when the total likes is invalid", () => {
+            it("should return the NOT found message", done => {
+                request(server)
+                    .get("/items/likes0")
+                    .set("Accept", "application/json")
+                    .expect("Content-Type", /json/)
+                    .expect(200)
+                    .end((err) => {
+                        done(err);
+                    });
+            });
+        });
     });
 
 });
