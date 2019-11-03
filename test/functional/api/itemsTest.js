@@ -50,6 +50,7 @@ describe("Itemss", () => {
             item.WITBuilding = "IT Building";
             item.WITRoom = "IT221";
             item.lostitem = "USB Type C Charger";
+            item.likes = 2;
             await item.save();
             item = new Item();
             item.studentid = 20074530;
@@ -215,7 +216,31 @@ describe("Itemss", () => {
                     });
             });
         });
+    });
 
+
+    describe("PUT /item/:id/like", () => {
+        describe("when the id is valid", () => {
+            it("should return a message and the item liked by 1", () => {
+                return request(server)
+                    .put(`/item/${validID}/like`)
+                    .expect(200)
+                    .then(resp => {
+                        expect(resp.body.data).to.have.property("likes", 3);
+                    });
+            });
+            after(() => {
+                return request(server)
+                    .get(`/items/${validID}`)
+                    .set("Accept", "application/json")
+                    .expect("Content-Type", /json/)
+                    .expect(200)
+                    .then(resp => {
+                        expect(resp.body[0]).to.have.property("likes", 3);
+                    });
+            });
+        });
 
     });
+
 });
