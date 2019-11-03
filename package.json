@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "NODE_ENV=dev && node bin/www",
-    "test": "mocha test/functional/api/itemsTest.js --exit"
+    "test": "cross-env NODE_ENV=test mocha --exit"
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",

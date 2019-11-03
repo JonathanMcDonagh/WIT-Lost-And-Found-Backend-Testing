@@ -5,18 +5,25 @@ let uriUtil = require('mongodb-uri');
 let Item = require('../models/items');
 let Fuse = require('fuse.js');
 
-var mongodbUri = 'mongodb+srv://jonathanmcdonagh:20074520@web-app-cluster-uct5k.mongodb.net/witlostandfounddb?retryWrites=true&w=majority';
 
-
+//var mongodbUri = 'mongodb+srv://jonathanmcdonagh:20074520@web-app-cluster-uct5k.mongodb.net/witlostandfounddb?retryWrites=true&w=majority';
 // noinspection JSIgnoredPromiseFromCall
-mongoose.connect(mongodbUri, { useNewUrlParser: true, useUnifiedTopology: true });
+//mongoose.connect(mongodbUri, { useNewUrlParser: true, useUnifiedTopology: true });
+
+
+mongoose.connect("mongodb://localhost:27017/witlostandfounddb", {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+});
+
+
 let db = mongoose.connection;
 
 db.on('error', function (err) {
     console.log('Unable to connect to [ ' + db.name + ' ]', err);
 });
 db.once('open', function () {
-    console.log('Successfully connected to WIT-Lost-And-Found Database as ' + db.name);
+    console.log('Successfully connected to ' + db.name);
 });
 
 
