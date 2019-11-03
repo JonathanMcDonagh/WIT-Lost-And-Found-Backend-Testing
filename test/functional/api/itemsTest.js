@@ -204,6 +204,18 @@ describe("Itemss", () => {
                     });
             });
         });
+        describe("when the WIT Building is invalid", () => {
+            it("should return the NOT found message", done => {
+                request(server)
+                    .get("/building/0000")
+                    .set("Accept", "application/json")
+                    .expect("Content-Type", /json/)
+                    .expect(200)
+                    .end((err, res) => {
+                        done(err);
+                    });
+            });
+        });
     });
 
 
