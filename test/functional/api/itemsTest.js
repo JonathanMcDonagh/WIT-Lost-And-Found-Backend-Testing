@@ -69,6 +69,7 @@ describe("Itemss", () => {
         }
     });
 
+    //Gets all items
     describe("GET /items", () => {
         it("should GET all the items", done => {
             request(server)
@@ -93,6 +94,7 @@ describe("Itemss", () => {
     });
 
 
+    //Gets item by id
     describe("GET /items/:id", () => {
         describe("when the id is valid", () => {
             it("should return the matching item", done => {
@@ -124,6 +126,7 @@ describe("Itemss", () => {
     });
 
 
+    //Gets item by student id
     describe("GET /items/student/:id", () => {
         describe("when the student id is valid", () => {
             it("should return the matching item", done => {
@@ -139,7 +142,6 @@ describe("Itemss", () => {
                     });
             });
         });
-
         describe("when the id is invalid", () => {
             it("should return the NOT found message", done => {
                 request(server)
@@ -155,6 +157,7 @@ describe("Itemss", () => {
     });
 
 
+    //Gets item by WITRoom
     describe("GET /rooms/:WITRoom", () => {
         describe("when the WIT Room id is valid", () => {
             it("should return the matching item", done => {
@@ -170,7 +173,6 @@ describe("Itemss", () => {
                     });
             });
         });
-
         describe("when the WIT Room is invalid", () => {
             it("should return the NOT found message", done => {
                 request(server)
@@ -186,6 +188,26 @@ describe("Itemss", () => {
     });
 
 
+    //Gets item by WITBuilding
+    describe("GET /building/:WITBuilding", () => {
+        describe("when the WIT Building id is valid", () => {
+            it("should return the matching item", done => {
+                request(server)
+                    .get(`/building/${WITBuilding}`)
+                    .set("Accept", "application/json")
+                    .expect("Content-Type", /json/)
+                    .expect(200)
+                    .end((err, res) => {
+                        expect(res.body[0]).to.have.property("name", "Jonathan");
+                        expect(res.body[0]).to.have.property("lostitem", "USB Type C Charger");
+                        done(err);
+                    });
+            });
+        });
+    });
+
+
+    //Posts item
     describe("POST /items", () => {
         describe("when the the post is successful", () => {
             it("should return confirmation message and update datastore", () => {
