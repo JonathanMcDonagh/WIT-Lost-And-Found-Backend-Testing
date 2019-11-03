@@ -351,17 +351,26 @@ describe("Itemss", () => {
 
     describe("DELETE /item/:id", () => {
         describe("when the id is valid", () => {
-                it("should get item with the valid id and delete it", done => {
-                    request(server)
-                        .delete(`/items/${validID}`)
-                        .set("Accept", "application/json")
-                        .expect("Content-Type", /json/)
-                        .expect(200)
-                        .end((err) => {
-                            done(err);
-                        });
-                });
+            it("should get item with the valid id and delete it", done => {
+                request(server)
+                    .delete(`/items/${validID}`)
+                    .set("Accept", "application/json")
+                    .expect("Content-Type", /json/)
+                    .expect(200)
+                    .end((err) => {
+                        done(err);
+                    });
             });
         });
+        describe("when the id is invalid", () => {
+            it("should return a 404 and a message for invalid item id", () => {
+                request(server)
+                    .delete("/items/0000")
+                    .expect(404)
+                    .expect({message: "Invalid item Id!"});
+            });
+        });
+    });
+
 
 });
