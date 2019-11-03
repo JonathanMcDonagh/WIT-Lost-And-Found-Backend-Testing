@@ -240,7 +240,13 @@ describe("Itemss", () => {
                     });
             });
         });
-
+        describe("when the id is invalid", () => {
+            it("should return a 404 and a message for invalid item id", () => {
+                return request(server)
+                    .put("/items/1100001/like")
+                    .expect(404);
+            });
+        });
     });
 
 });
