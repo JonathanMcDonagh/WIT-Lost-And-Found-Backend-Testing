@@ -123,4 +123,35 @@ describe("Itemss", () => {
     });
 
 
+    describe("GET /items/student/:id", () => {
+        describe("when the student id is valid", () => {
+            it("should return the matching item", done => {
+                request(server)
+                    .get(`/items/student/${studentID}`)
+                    .set("Accept", "application/json")
+                    .expect("Content-Type", /json/)
+                    .expect(200)
+                    .end((err, res) => {
+                        expect(res.body[0]).to.have.property("studentid", 20074520);
+                        expect(res.body[0]).to.have.property("name", "Jonathan");
+                        done(err);
+                    });
+            });
+        });
+
+        describe("when the id is invalid", () => {
+            it("should return the NOT found message", done => {
+                request(server)
+                    .get("/items/student/9999")
+                    .set("Accept", "application/json")
+                    .expect("Content-Type", /json/)
+                    .expect(200)
+                    .end((err, res) => {
+                        done(err);
+                    });
+            });
+        });
+    });
+
+
 });
