@@ -1,0 +1,4 @@
+file:
+    - test/functional/api/itemsTest.js
+
+timeout: 10000

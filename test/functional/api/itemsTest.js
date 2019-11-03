@@ -58,7 +58,7 @@ describe("Itemss", () => {
             item.WITRoom = "ITG17";
             item.lostitem = "Bag";
             await item.save();
-            item = await Item.findOne({ studentid: 20074520 });
+            item = await Item.findOne({studentid: 20074520});
             validID = item._id;
             studentID = item.studentid;
             WITBuilding = item.WITBuilding;
@@ -76,7 +76,7 @@ describe("Itemss", () => {
                 .expect("Content-Type", /json/)
                 .expect(200)
                 .end((err, res) => {
-                    try{
+                    try {
                         expect(res.body).to.be.a("array");
                         const result = _.map(res.body, item => {
                             return {studentid: item.studentid, lostitem: item.lostitem};
@@ -185,4 +185,37 @@ describe("Itemss", () => {
     });
 
 
+    describe("POST /items", () => {
+        describe("when the the post is successful", () => {
+            it("should return confirmation message and update datastore", () => {
+                const item = {
+                    studentid: 20075620,
+                    name: "Test Name",
+                    WITBuilding: "Business Building",
+                    WITRoom: "F02",
+                    lostitem: "Laptop",
+                    likes: 0
+                };
+                return request(server)
+                    .post("/items")
+                    .send(item)
+                    .expect(200)
+                    .then(res => {
+                        //expect(res.body.message).equals("Item Added!");
+                        validID = res.body.data._id;
+                    });
+            });
+            after(() => {
+                return request(server)
+                    .get(`/items/${validID}`)
+                    .expect(200)
+                    .then(res => {
+                        expect(res.body[0]).to.have.property("studentid", 20075620);
+                        expect(res.body[0]).to.have.property("lostitem", "Laptop");
+                    });
+            });
+        });
+
+
+    });
 });
