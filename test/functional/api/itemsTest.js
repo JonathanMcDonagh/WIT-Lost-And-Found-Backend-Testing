@@ -400,4 +400,21 @@ describe("Itemss", () => {
         });
     });
 
+
+    describe("GET /items/total", () => {
+        describe("when the id is valid", () => {
+            it("should return the total number of items", done => {
+                request(server)
+                    .get(`/items/total`)
+                    .set("Accept", "application/json")
+                    .expect("Content-Type", /json/)
+                    .expect(200)
+                    .end((err) => {
+                        done(err);
+                    });
+            });
+        });
+    });
+
+
 });
