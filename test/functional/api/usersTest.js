@@ -155,4 +155,36 @@ describe("Userss", () => {
         });
     });
 
+
+    //Adds user
+    describe("POST /users", () => {
+        describe("when the the post is successful", () => {
+            it("should return confirmation message and update datastore", () => {
+                const item = {
+                    email: "20075620@mail.wit.ie",
+                    name: "Test Name",
+                    password: "20075620",
+                    posts: 0
+                };
+                return request(server)
+                    .post("/users")
+                    .send(item)
+                    .expect(200)
+                    .then(res => {
+                        expect(res.body.message).equals("User Successfully Added!");
+                        validID = res.body.data._id;
+                    });
+            });
+            after(() => {
+                return request(server)
+                    .get(`/users/${validID}`)
+                    .expect(200)
+                    .then(res => {
+                        expect(res.body[0]).to.have.property("email", "20075620@mail.wit.ie");
+                        expect(res.body[0]).to.have.property("name", "Test Name");
+                    });
+            });
+        });
+    });
+
 });
