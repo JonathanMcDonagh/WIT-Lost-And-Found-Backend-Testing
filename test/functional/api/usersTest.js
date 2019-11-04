@@ -7,7 +7,7 @@ const { MongoClient } = require("mongodb");
 
 
 const _ = require("lodash");
-let server, mongod, db, url, connection, validID, studentID, WITBuilding, WITRoom;
+let server, mongod, db, url, connection, validID;
 
 describe("Userss", () => {
     before(async () => {
@@ -53,14 +53,14 @@ describe("Userss", () => {
             user.password = "20074520";
             user.posts = 0;
             await user.save();
+            user = new User();
             user.email = "20074530@mail.wit.ie";
             user.name = "Lauren";
             user.password = "20074530";
             user.posts = 0;
             await user.save();
-            user = await user.findOneUser({email: "20074520@mail.wit.ie"});
+            user = await User.findOne({email: "20074520@mail.wit.ie"});
             validID = user._id;
-            userName = user.name;
         } catch (error) {
             console.log(error);
         }
@@ -86,6 +86,39 @@ describe("Userss", () => {
                         done(err);
                     }
                 });
+        });
+    });
+
+
+    //Gets user by id
+    describe("GET /users/:id", () => {
+            describe("when the user id is valid", () => {
+                it("should return the matching item", done => {
+                    request(server)
+                        .get(`/users/${validID}`)
+                        .set("Accept", "application/json")
+                        .expect("Content-Type", /json/)
+                        .expect(200)
+                        .end((err, res) => {
+                            expect(res.body[0]).to.have.property("email", "20074520@mail.wit.ie");
+                            expect(res.body[0]).to.have.property("name", "Jonathan");
+                            done(err);
+                        });
+                });
+            });
+        //Return when the user id is invalid
+        describe("when the user id is invalid", () => {
+            it("should return the NOT found message", done => {
+                request(server)
+                    .get("/users/0000")
+                    .set("Accept", "application/json")
+                    .expect("Content-Type", /json/)
+                    .expect(200)
+                    .end((err, res) => {
+                        expect(res.body.message).equals("User NOT Found!");
+                        done(err);
+                    });
+            });
         });
     });
 

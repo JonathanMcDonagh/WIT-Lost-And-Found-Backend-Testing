@@ -23,7 +23,7 @@ router.findOneUser = (req, res) => {
 
   User.find({ "_id" : req.params.id },function(err, user) {
     if (err)
-      res.json({ message: 'Item NOT Found!', errmsg : err } );
+      res.json({ message: 'User NOT Found!', errmsg : err } );
     else
       res.send(JSON.stringify(user,null,5));
   });
