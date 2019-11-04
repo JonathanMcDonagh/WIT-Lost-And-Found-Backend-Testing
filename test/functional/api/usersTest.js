@@ -66,5 +66,27 @@ describe("Userss", () => {
         }
     });
 
+    describe("GET /users", () => {
+        it("should GET all the users", done => {
+            request(server)
+                .get("/users")
+                .set("Accept", "application/json")
+                .expect("Content-Type", /json/)
+                .expect(200)
+                .end((err, res) => {
+                    try {
+                        expect(res.body).to.be.a("array");
+                        const result = _.map(res.body, user => {
+                            return {email: user.email, name: user.name};
+                        });
+                        expect(result).to.deep.include({email: "20074520@mail.wit.ie", name: "Jonathan"});
+                        expect(result).to.deep.include({email: "20074530@mail.wit.ie", name: "Lauren"});
+                        done();
+                    } catch (e) {
+                        done(err);
+                    }
+                });
+        });
+    });
 
 });
