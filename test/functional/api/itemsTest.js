@@ -3,10 +3,11 @@ const expect = chai.expect;
 const request = require("supertest");
 const MongoMemoryServer = require("mongodb-memory-server").MongoMemoryServer;
 const Item = require("../../../models/items");
-const mongoose = require("mongoose");
+const { MongoClient } = require("mongodb");
+
 
 const _ = require("lodash");
-let server, mongod, db, validID, studentID, WITBuilding, WITRoom;
+let server, mongod, db, url, connection, validID, studentID, WITBuilding, WITRoom;
 
 describe("Itemss", () => {
     before(async () => {
@@ -20,14 +21,14 @@ describe("Itemss", () => {
             });
             // Async Trick - this ensures the database is created before
             // we try to connect to it or start the server
-            await mongod.getConnectionString();
+            url = await mongod.getConnectionString();
 
-            mongoose.connect("mongodb://localhost:27017/witlostandfounddb", {
+            connection = await MongoClient.connect(url, {
                 useNewUrlParser: true,
                 useUnifiedTopology: true
             });
             server = require("../../../bin/www");
-            db = mongoose.connection;
+            db = connection.db(await mongod.getDbName());
         } catch (error) {
             console.log(error);
         }
@@ -35,7 +36,9 @@ describe("Itemss", () => {
 
     after(async () => {
         try {
-            await db.dropDatabase();
+            await connection.close();
+            await mongod.stop();
+            await server.close()
         } catch (error) {
             console.log(error);
         }

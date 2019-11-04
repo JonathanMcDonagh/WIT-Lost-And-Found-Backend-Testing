@@ -1,4 +1,5 @@
 file:
     - test/functional/api/itemsTest.js
+    - test/functional/api/usersTest.js
 
 timeout: 10000
