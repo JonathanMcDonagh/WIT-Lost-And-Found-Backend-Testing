@@ -110,6 +110,7 @@ describe("Itemss", () => {
                     });
             });
         });
+        //Return when id is invalid
         describe("when the id is invalid", () => {
             it("should return the NOT found message", done => {
                 request(server)
@@ -142,10 +143,11 @@ describe("Itemss", () => {
                     });
             });
         });
+        //Returns when student id is invalid
         describe("when the id is invalid", () => {
             it("should return the NOT found message", done => {
                 request(server)
-                    .get("/items/student/9999")
+                    .get("/items/student/0000")
                     .set("Accept", "application/json")
                     .expect("Content-Type", /json/)
                     .expect(200)
@@ -173,6 +175,7 @@ describe("Itemss", () => {
                     });
             });
         });
+        //Returns when WIT Room is invalid
         describe("when the WIT Room is invalid", () => {
             it("should return the NOT found message", done => {
                 request(server)
@@ -204,6 +207,7 @@ describe("Itemss", () => {
                     });
             });
         });
+        //Returns when WIT Building is invalid
         describe("when the WIT Building is invalid", () => {
             it("should return the NOT found message", done => {
                 request(server)
@@ -236,7 +240,7 @@ describe("Itemss", () => {
                     .send(item)
                     .expect(200)
                     .then(res => {
-                        //expect(res.body.message).equals("Item Added!");
+                        expect(res.body.message).equals("Item Successfully Added!");
                         validID = res.body.data._id;
                     });
             });
@@ -253,6 +257,7 @@ describe("Itemss", () => {
     });
 
 
+    //Adds like to item
     describe("PUT /item/:id/like", () => {
         describe("when the id is valid", () => {
             it("should return a message and the item liked by 1", () => {
@@ -274,6 +279,7 @@ describe("Itemss", () => {
                     });
             });
         });
+        //Returns when id is invalid
         describe("when the id is invalid", () => {
             it("should return a 404 and a message for invalid item id", () => {
                 return request(server)
@@ -284,9 +290,10 @@ describe("Itemss", () => {
     });
 
 
+    //Updates an item
     describe("PUT /item/:id/update", () => {
         describe("when the id is valid", () => {
-            it("should return a message and update the item", () => {
+            it("should return a message and update the entire item", () => {
                 it("should get item with the valid id and update it", done => {
                     request(server)
                         .get(`/items/${validID}`)
@@ -326,6 +333,7 @@ describe("Itemss", () => {
                     });
             });
         });
+        //Returns when the id is invalid
         describe("when the id is invalid", () => {
             it("should return a 404 and a message for invalid item id", () => {
                 return request(server)
@@ -336,9 +344,10 @@ describe("Itemss", () => {
     });
 
 
+    //Updates an lost item description
     describe("PUT /item/lostitem/:id/update", () => {
         describe("when the id is valid", () => {
-            it("should return a message and update the lost item", () => {
+            it("should return a message and update the lost items description", () => {
                 it("should get item with the valid id and update the lost item", done => {
                     request(server)
                         .get(`/item/lostitem/${validID}/update`)
@@ -373,6 +382,7 @@ describe("Itemss", () => {
                     });
             });
         });
+        //Returns if updating the item fails
         describe("when the id is invalid", () => {
             it("should return a 404 and a message for invalid item id", () => {
                 return request(server)
@@ -383,6 +393,7 @@ describe("Itemss", () => {
     });
 
 
+    //Gets item by id and deletes it
     describe("DELETE /item/:id", () => {
         describe("when the id is valid", () => {
             it("should get item with the valid id and delete it", done => {
@@ -396,17 +407,19 @@ describe("Itemss", () => {
                     });
             });
         });
+        //Returns when item id is invalid
         describe("when the id is invalid", () => {
             it("should return a 404 and a message for invalid item id", () => {
                 request(server)
                     .delete("/items/0000")
                     .expect(404)
-                    .expect({message: "Invalid item Id!"});
+                    .expect({message: "Invalid item ID!"});
             });
         });
     });
 
 
+    //Gets total amount of likes
     describe("GET /items/likes", () => {
         describe("when the id is valid", () => {
             it("should return the total number of likes", done => {
@@ -420,6 +433,7 @@ describe("Itemss", () => {
                     });
             });
         });
+        //Returns when the total likes get route is invalid
         describe("when the total likes is invalid", () => {
             it("should return the NOT found message", done => {
                 request(server)
@@ -435,6 +449,7 @@ describe("Itemss", () => {
     });
 
 
+    //Gets total amount of posts
     describe("GET /items/total", () => {
         describe("when the id is valid", () => {
             it("should return the total number of items", done => {
@@ -448,6 +463,7 @@ describe("Itemss", () => {
                     });
             });
         });
+        //Returns when the total posts get route is invalid
         describe("when the total items is invalid", () => {
             it("should return the NOT found message", done => {
                 request(server)
@@ -462,5 +478,31 @@ describe("Itemss", () => {
         });
     });
 
+
+    //Fuzzy Search
+    describe("POST /lostitem/search", () => {
+        describe("when the the fuzzy search is successful", () => {
+            it("should return confirmation message and the matching values", () => {
+                const searchedItem = {
+                    lostitem: "Charger"
+                };
+                return request(server)
+                    .post("/lostitem/search")
+                    .send(searchedItem)
+                    .expect(200)
+                    .then(res => {
+                        expect(res.body.message).equals("Fuzzy Search: ");
+                    });
+            });
+            after(() => {
+                return request(server)
+                    .get("/items")
+                    .expect(200)
+                    .then(res => {
+                        expect(res.body[0]).to.have.property("lostitem", "USB Type C Charger");
+                    });
+            });
+        });
+    });
 
 });
