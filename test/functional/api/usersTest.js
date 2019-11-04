@@ -7,7 +7,7 @@ const { MongoClient } = require("mongodb");
 
 
 const _ = require("lodash");
-let server, mongod, db, url, connection, validID;
+let server, mongod, db, url, connection, validID, userName;
 
 describe("Userss", () => {
     before(async () => {
@@ -61,6 +61,7 @@ describe("Userss", () => {
             await user.save();
             user = await User.findOne({email: "20074520@mail.wit.ie"});
             validID = user._id;
+            userName = user.name;
         } catch (error) {
             console.log(error);
         }
@@ -116,6 +117,25 @@ describe("Userss", () => {
                     .expect(200)
                     .end((err, res) => {
                         expect(res.body.message).equals("User NOT Found!");
+                        done(err);
+                    });
+            });
+        });
+    });
+
+
+    //Gets user by id
+    describe("GET /users/name/:name", () => {
+        describe("when the user name is valid", () => {
+            it("should return the matching user", done => {
+                request(server)
+                    .get(`/users/name/${userName}`)
+                    .set("Accept", "application/json")
+                    .expect("Content-Type", /json/)
+                    .expect(200)
+                    .end((err, res) => {
+                        expect(res.body[0]).to.have.property("email", "20074520@mail.wit.ie",);
+                        expect(res.body[0]).to.have.property("password", "20074520");
                         done(err);
                     });
             });
