@@ -201,6 +201,14 @@ describe("Userss", () => {
                     });
             });
         });
+        describe("when the id is invalid", () => {
+            it("should return a 404 and a message for invalid item id", () => {
+                request(server)
+                    .delete("/users/0000")
+                    .expect(404)
+                    .expect({message: "Invalid user ID!"});
+            });
+        });
     });
 
 });
