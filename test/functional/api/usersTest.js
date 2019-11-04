@@ -187,4 +187,20 @@ describe("Userss", () => {
         });
     });
 
+    //Delete user by id
+    describe("DELETE /users/:id", () => {
+        describe("when the id is valid", () => {
+            it("should get user with the valid id and delete it", done => {
+                request(server)
+                    .delete(`/users/${validID}`)
+                    .set("Accept", "application/json")
+                    .expect("Content-Type", /json/)
+                    .expect(200)
+                    .end((err) => {
+                        done(err);
+                    });
+            });
+        });
+    });
+
 });
