@@ -124,7 +124,7 @@ describe("Userss", () => {
     });
 
 
-    //Gets user by id
+    //Gets user by name
     describe("GET /users/name/:name", () => {
         describe("when the user name is valid", () => {
             it("should return the matching user", done => {
@@ -136,6 +136,19 @@ describe("Userss", () => {
                     .end((err, res) => {
                         expect(res.body[0]).to.have.property("email", "20074520@mail.wit.ie",);
                         expect(res.body[0]).to.have.property("password", "20074520");
+                        done(err);
+                    });
+            });
+        });
+        //When the username is invalid
+        describe("when the user name is invalid", () => {
+            it("should return the NOT found message", done => {
+                request(server)
+                    .get("/users/name/0000")
+                    .set("Accept", "application/json")
+                    .expect("Content-Type", /json/)
+                    .expect(200)
+                    .end((err) => {
                         done(err);
                     });
             });
