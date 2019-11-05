@@ -13,7 +13,7 @@ mongoose.connect("mongodb://localhost:27017/witlostandfounddb", {
 
 let mongodbUri = "mongodb+srv://jonathanmcdonagh:20074520@web-app-cluster-uct5k.mongodb.net/witlostandfounddb?retryWrites=true&w=majority"
 // noinspection JSIgnoredPromiseFromCall
-mongoose.connect(mongodbUri, { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect(mongodbUri, { useNewUrlParser: true, useUnifiedTopology: true })
 
 let db = mongoose.connection
 
