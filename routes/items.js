@@ -4,18 +4,16 @@ let mongoose = require("mongoose")
 let Fuse = require("fuse.js")
 let Item = require("../models/items")
 
-
-
-//var mongodbUri = 'mongodb+srv://jonathanmcdonagh:20074520@web-app-cluster-uct5k.mongodb.net/witlostandfounddb?retryWrites=true&w=majority';
-// noinspection JSIgnoredPromiseFromCall
-//mongoose.connect(mongodbUri, { useNewUrlParser: true, useUnifiedTopology: true });
-
-
+/*
 mongoose.connect("mongodb://localhost:27017/witlostandfounddb", {
   useNewUrlParser: true,
   useUnifiedTopology: true
 })
+ */
 
+let mongodbUri = "mongodb+srv://jonathanmcdonagh:20074520@web-app-cluster-uct5k.mongodb.net/witlostandfounddb?retryWrites=true&w=majority"
+// noinspection JSIgnoredPromiseFromCall
+mongoose.connect(mongodbUri, { useNewUrlParser: true, useUnifiedTopology: true });
 
 let db = mongoose.connection
 
