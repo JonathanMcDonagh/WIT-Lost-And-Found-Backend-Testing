@@ -10,12 +10,9 @@ BSc (Hons) in Software Systems Development - Year 4 Semester 1
 
 ## Overview
 
-WIT Lost And Found is a Web App that allows people to post a 
-lost item with their Student ID, Name, WITBuilding, WITRoom,
-Lost Item Description. 
+**WIT Lost And Found is a Web App made using the MEVN stack**: This app allows people to post a lost item through a form using their Student ID, Name, WIT Building, WIT Room Number, and the Lost Item Description. 
 
-I have also included a users model that allows you to add a user
-based on email, name and password.
+I have also included a users model that allows users to sign up using a email, name, and password.
 
 ## API endpoints
 
