@@ -1,8 +1,14 @@
-#Assignment 1 Agile Software Practice
+## Assignment 1 
 
 Name: Jonathan McDonagh
 
-##Overview
+## Agile Software Practice
+
+BSc (Hons) in Software Systems Development - Year 4 Semester 1
+
+**Grade:** 63%  
+
+## Overview
 
 WIT Lost And Found is a Web App that allows people to post a 
 lost item with their Student ID, Name, WITBuilding, WITRoom,
@@ -11,7 +17,7 @@ Lost Item Description.
 I have also included a users model that allows you to add a user
 based on email, name and password.
 
-##API endpoints
+## API endpoints
 
 ~~~
 (Items)
@@ -36,7 +42,7 @@ based on email, name and password.
 - Post /users - Adds a user.
 - Delete /users/:id - Deletes a user.
 ~~~
-##Data Model
+## Data Model
 
 Item Example
 
@@ -60,7 +66,7 @@ User Example
           "posts": 5
      }
      
-##Sample Test Execution
+## Sample Test Execution
 
     Items
     Successfully connected to witlostandfounddb
